@@ -47,32 +47,26 @@ func contentToMarkdown(content []content) string {
 		if c.Type == "embedly" || c.Type == "twitter" {
 			continue
 		}
-		if c.Type == "heading" {
+		switch c.Type {
+		case "heading":
 			markdown += headingToMarkdown(c)
 			markdown += "\n\n"
-		}
-		if c.Type == "paragraph" {
+		case "paragraph":
 			markdown += paragraphToMarkdown(c)
 			markdown += "\n\n"
-		}
-		if c.Type == "text" {
+		case "text":
 			markdown += textToMarkdown(c)
-		}
-		if c.Type == "image" {
+		case "image":
 			markdown += imageToMarkdown(c)
 			markdown += "\n\n"
-		}
-		if c.Type == "figure" {
+		case "figure":
 			markdown += figureToMarkdown(c)
-		}
-		if c.Type == "horizontalRule" {
+		case "horizontalRule":
 			markdown += hrToMarkdown(c)
 			markdown += "\n\n"
-		}
-		if c.Type == "orderedList" {
+		case "orderedList":
 			markdown += orderedListToMarkdown(c)
-		}
-		if c.Type == "unorderedList" {
+		case "unorderedList":
 			markdown += unorderedListToMarkdown(c)
 		}
 	}
@@ -104,22 +98,19 @@ func textToMarkdown(content content) string {
 	}
 	text := content.Text
 	for _, mark := range content.Marks {
-		if mark.Type == "link" {
+		switch mark.Type {
+		case "link":
 			url, ok := mark.Attrs.(map[string]any)["href"].(string)
 			if ok {
 				text = fmt.Sprintf("[%s](%s)", text, url)
 			}
-		}
-		if mark.Type == "bold" {
+		case "bold":
 			text = fmt.Sprintf("**%s**", text)
-		}
-		if mark.Type == "italic" {
+		case "italic":
 			text = fmt.Sprintf("_%s_", text)
-		}
-		if mark.Type == "code" {
+		case "code":
 			text = fmt.Sprintf("`%s`", text)
-		}
-		if mark.Type == "strikethrough" {
+		case "strikethrough":
 			text = fmt.Sprintf("~~%s~~", text)
 		}
 	}
